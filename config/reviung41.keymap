@@ -10,67 +10,67 @@
 #include <dt-bindings/zmk/rgb.h>
 
 / {
-        keymap {
-                compatible = "zmk,keymap";
+    /* -------- SNIP TOOL MACRO (Win + Shift + S) -------- */
+    macros {
+        snip_tool: snip_tool {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <20>;
+            tap-ms = <20>;
 
-                default_layer {
-                        display-name = "Default Layer";
-// -------------------------------------------------------------------------------------
-// |  ESC |  Q  |  W  |  E  |  R  |  T  |   |  Y  |  U   |  I  |  O  |  P  |   BKSP    |
-// | CTRL |  A  |  S  |  D  |  F  |  G  |   |  H  |  J   |  K  |  L  |  ;  |    '      |
-// | SHFT |  Z  |  X  |  C  |  V  |  B  |   |  N  |  M   |  ,  |  .  |  /  | SHFT(RET) |
-//                         | ALT | LWR | SPC | RSE  | LGUI |
-                        bindings = <
+            bindings = <
+                &macro_press &kp LGUI
+                &macro_press &kp LSHIFT
+
+                &macro_tap &kp S
+
+                &macro_release &kp LSHIFT
+                &macro_release &kp LGUI
+            >;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        default_layer {
+            display-name = "Default Layer";
+            bindings = <
    &kp ESC   &kp Q &kp W &kp E &kp R &kp T   &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
    &kp LCTRL &kp A &kp S &kp D &kp F &kp G   &kp H &kp J  &kp K     &kp L   &kp SEMI &kp SQT
    &kp LSHFT &kp Z &kp X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &mt RSHFT RET
                         &kp LALT  &mo 1 &kp SPACE &mo 2  &kp LGUI
-                        >;
-                };
+            >;
+        };
 
-                lower_layer {
-                        display-name = "Lower Layer";
-// ----------------------------------------------------------------------------------
-// |TAB |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |  (  |  )  |    DEL    |
-// |TAB |  _  |  +  |  {  |  }  | "|" |   | LFT | DWN |  UP | RGT |  `  |     ~     |
-// |TAB | ESC | GUI | ALT | CAPS|  SNIP  |   | HOME| END | PGUP| PGDN| PRSC| SHFT(RET) |
-//                       |     |     | RET | ADJ |     |
-                        bindings = <
+        lower_layer {
+            display-name = "Lower Layer";
+            bindings = <
    &kp TAB &kp EXCL  &kp AT      &kp HASH &kp DLLR &kp PRCNT      &kp CARET &kp AMPS &kp KMLT  &kp LPAR  &kp RPAR  &kp DEL
    &kp TAB &kp UNDER &kp KP_PLUS &kp LBRC &kp RBRC &kp PIPE       &kp LEFT  &kp LEFT &kp UP    &kp RIGHT &kp GRAVE &kp TILDE
-   &kp TAB &kp ESC   &kp LGUI    &kp LALT &kp CLCK &kp &kp LG(LS(S))        &kp HOME  &kp LEFT  &kp DOWN &kp RIGHT &kp PSCRN &mt RSHFT RET
-                                 &trans      &trans       &kp RET        &mo 3       &trans
-                        >;
-                };
+   &kp TAB &kp ESC   &kp LGUI    &kp LALT &kp CLCK &snip_tool     &kp HOME  &kp LEFT &kp DOWN &kp RIGHT &kp PSCRN &mt RSHFT RET
+                               &trans      &trans       &kp RET        &mo 3       &trans
+            >;
+        };
 
-                raise_layer {
-                        display-name = "Raise Layer";
-// -----------------------------------------------------------------------------------------
-// | TAB|  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  | DEL |
-// | TAB|  -  |  =  |  [  |  ]  |  \  |   | F1  | F2  | F3  | F4  | F5  | F6  |
-// | TAB| ESC | GUI | ALT | CAPS|  SNIP  |   | F7  | F8  | F9  | F10 | F11 | F12 |
-//                       |     | ADJ | BKSP |    |     |
-                        bindings = <
+        raise_layer {
+            display-name = "Raise Layer";
+            bindings = <
    &kp TAB &kp N1    &kp N2    &kp N3    &kp N4    &kp N5        &kp N6    &kp N7    &kp N8    &kp N9    &kp N0    &kp DEL
    &kp TAB &kp MINUS &kp EQUAL &kp LBKT  &kp RBKT  &kp BSLH      &kp F1    &kp F2    &kp F3    &kp F4    &kp F5    &kp F6
-   &kp TAB &kp ESC   &kp LGUI  &kp RALT  &kp CLCK  &kp &kp LG(LS(S))       &kp F7    &kp F8    &kp F9    &kp F10   &kp F11   &kp F12
-                                &trans      &mo 3       &kp BSPC        &trans      &trans
-                        >;
-                };
+   &kp TAB &kp ESC   &kp LGUI  &kp RALT  &kp CLCK  &snip_tool     &kp F7    &kp F8    &kp F9    &kp F10   &kp F11   &kp F12
+                               &trans      &mo 3       &kp BSPC        &trans      &trans
+            >;
+        };
 
-                adjust_layer {
-                        display-name = "Adjust Layer";
-// -----------------------------------------------------------------------------------------
-// | RGB BRI+ | RGB SAT+ | RGB HUE+ | RGB ANI+ |    | RGB TOG |   |  BT1  | BT2 | BT3 | BT4 | BT5 | BT CLR |
-// | RGB BRI- | RGB SAT- | RGB HUE- | RGB ANI- |    |         |   |       |     |     |     |     |        |
-// |          |          |          |          |    |         |   | RESET |     |     |     |     |        |
-//                                              |     |     |     |     |     |
-                        bindings = <
+        adjust_layer {
+            display-name = "Adjust Layer";
+            bindings = <
    &rgb_ug RGB_BRI &rgb_ug RGB_SAI &rgb_ug RGB_HUI &rgb_ug RGB_EFF &none &rgb_ug RGB_TOG    &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &bt BT_CLR
    &rgb_ug RGB_BRD &rgb_ug RGB_SAD &rgb_ug RGB_HUD &rgb_ug RGB_EFR &none &none              &none        &none        &none        &none        &none        &none
-   &none           &none           &none           &none           &none &none              &sys_reset       &none        &none        &none        &none        &none
-                                                             &trans      &trans       &tog 3        &trans      &trans
-                        >;
-                };
+   &none           &none           &none           &none           &none &none              &sys_reset   &none        &none        &none        &none        &none
+                                            &trans      &trans       &tog 3        &trans      &trans
+            >;
         };
+    };
 };
